@@ -14,6 +14,8 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
+import { useDispatch } from "react-redux";
+import { authRegisterUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   login: "",
@@ -32,6 +34,8 @@ const RegistrationScreen = () => {
     email: false,
     password: false,
   });
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -66,8 +70,8 @@ const RegistrationScreen = () => {
   };
   const onLogin = () => {
     setIsShowKeyboard(false);
-    console.log("state", state);
     Keyboard.dismiss();
+    dispatch(authRegisterUser(state));
     setState(initialState);
   };
 
@@ -216,10 +220,10 @@ const RegistrationScreen = () => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => (
-                onLogin(),
-                navigation.navigate("HomeScreen", {
-                  screen: "Posts",
-                })
+                onLogin()
+                // navigation.navigate("HomeScreen", {
+                //   screen: "Posts",
+                // })
               )}
             >
               <Text style={styles.buttonText}>Sign up</Text>
