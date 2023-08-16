@@ -12,6 +12,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useFonts } from "expo-font";
+import { useDispatch } from "react-redux";
+import { authLogInUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -28,6 +30,8 @@ const LoginScreen = () => {
     password: false,
   });
 
+  const dispatch = useDispatch();
+
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
@@ -42,8 +46,8 @@ const LoginScreen = () => {
   };
   const onLogin = () => {
     setIsShowKeyboard(false);
-    console.log("state", state);
     Keyboard.dismiss();
+    dispatch(authLogInUser(state));
     setState(initialState);
   };
 
@@ -141,12 +145,12 @@ const LoginScreen = () => {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => (
-                onLogin(),
-                navigation.navigate("HomeScreen", {
-                  screen: "Posts",
-                })
-              )}
+              onPress={() =>
+                onLogin()
+                // navigation.navigate("HomeScreen", {
+                //   screen: "Posts",
+                // })
+              }
             >
               <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>

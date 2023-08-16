@@ -7,33 +7,34 @@ import { HomeScreen } from "./Screens/auth/HomeScreen";
 const AuthStack = createStackNavigator();
 
 export const useRoute = (isAuth) => {
-  // if (!isAuth) {
-  return (
-    <AuthStack.Navigator initialRouteName="Log in">
-      <AuthStack.Screen
-        name="Log in"
-        component={LoginScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <AuthStack.Screen
-        name="Sign up"
-        component={RegistrationScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <AuthStack.Screen
+  if (!isAuth) {
+    return (
+      <AuthStack.Navigator initialRouteName="Log in">
+        <AuthStack.Screen
+          name="Log in"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <AuthStack.Screen
+          name="Sign up"
+          component={RegistrationScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <AuthStack.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
           headerShown: false,
         }}
-      />
-    </AuthStack.Navigator>
-  );
-  // }
+      /> */}
+      </AuthStack.Navigator>
+    );
+  }
+  return <HomeScreen />;
   // return (
   //   <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
   //     <MainTab.Screen
