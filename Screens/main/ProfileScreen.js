@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -15,10 +14,13 @@ import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Card } from "../../components/Card";
 import { postsData } from "../../data/posts";
+import { useDispatch } from "react-redux";
+import { authLogOutUser } from "../../redux/auth/authOperations";
 
 const ProfileScreen = ({ route }) => {
-  const navigation = useNavigation();
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -44,6 +46,10 @@ const ProfileScreen = ({ route }) => {
 
   const removeAvatar = () => {
     setSelectedImage(null);
+  };
+
+  const logout = () => {
+    dispatch(authLogOutUser());
   };
 
   const imageSource = selectedImage !== null && { uri: selectedImage };
@@ -81,10 +87,7 @@ const ProfileScreen = ({ route }) => {
                   </TouchableOpacity>
                 )}
               </View>
-              <TouchableOpacity
-                style={styles.logoutIcon}
-                onPress={() => navigation.navigate("Log in")}
-              >
+              <TouchableOpacity style={styles.logoutIcon} onPress={logout}>
                 <MaterialIcons name="logout" size={24} color="#BDBDBD" />
               </TouchableOpacity>
               <Text style={styles.title}>User Name</Text>

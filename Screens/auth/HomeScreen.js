@@ -10,12 +10,20 @@ import CreatePostsScreen from "../main/CreatePostsScreen";
 import ProfileScreen from "../main/ProfileScreen";
 import CommentsScreen from "../nestedScreens/CommentsScreen";
 import MapScreen from "../nestedScreens/MapScreen";
+import { useDispatch } from "react-redux";
+import { authLogOutUser } from "../../redux/auth/authOperations";
 
 const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const HomeTabs = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(authLogOutUser());
+  };
+
   return (
     <MainTab.Navigator
       screenOptions={({ route }) => ({
@@ -51,10 +59,7 @@ const HomeTabs = () => {
             borderColor: "#BDBDBD",
           },
           headerRight: () => (
-            <TouchableOpacity
-              style={styles.logoutIcon}
-              onPress={() => navigation.navigate("Log in")}
-            >
+            <TouchableOpacity style={styles.logoutIcon} onPress={logout}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
