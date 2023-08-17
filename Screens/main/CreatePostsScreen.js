@@ -19,6 +19,10 @@ import * as ImagePicker from "expo-image-picker";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
+import { db, storage } from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 const initialState = {
   photo: null,
@@ -43,6 +47,8 @@ const CreatePostsScreen = () => {
     location: false,
   });
   const [isFormFilled, setIsFormFilled] = useState(false);
+
+  const { userId, userName } = useSelector((state) => state.auth);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -130,8 +136,28 @@ const CreatePostsScreen = () => {
     }
   };
 
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(state.photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    const storageRef = ref(storage, `postImage/${uniquePostId}`);
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    await addDoc(collection(db, "posts"), {
+      ...state,
+      photo,
+      userId,
+      userName,
+    });
+  };
+
   const publish = () => {
     setIsShowKeyboard(false);
+    uploadPostToServer();
     navigation.navigate("Posts", { state });
     Keyboard.dismiss();
     setState(initialState);
