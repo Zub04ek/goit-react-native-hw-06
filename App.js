@@ -1,16 +1,13 @@
 import "react-native-gesture-handler";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import { NavigationContainer } from "@react-navigation/native";
-import { AppLoading } from "expo";
-import * as Font from "expo-font";
+// import { AppLoading } from "expo";
+// import * as Font from "expo-font";
+// import { useState } from "react";
 
-import { useRoute } from "./router";
 import { persistor, store } from "./redux/store";
 import { Text } from "react-native";
-import { useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/config";
+import Main from "./components/main";
 
 // const loadApplication = async () => {
 //   await Font.loadAsync({
@@ -21,12 +18,7 @@ import { auth } from "./firebase/config";
 // };
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
-  const [user, setUser] = useState(null);
-
-  onAuthStateChanged(auth, (user) => setUser(user));
-
-  const routing = useRoute(user);
+  // const [isReady, setIsReady] = useState(false);
 
   // if (!isReady) {
   //   return (
@@ -36,7 +28,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-        <NavigationContainer>{routing}</NavigationContainer>
+        <Main />
       </PersistGate>
     </Provider>
   );
