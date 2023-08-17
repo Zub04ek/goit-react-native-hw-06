@@ -1,18 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    userId: null,
-    userName: null
+  userId: null,
+  userName: null,
+  stateChange: false,
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
-//   extraReducers: builder =>
-//     builder
-//       .addCase(register.fulfilled, (state, action) => {
-//         state.user = action.payload.user;
-//         state.token = action.payload.token;
-//         state.isLoggedIn = true;
-//       }),
+  reducers: {
+    updateUserProfile: (state, { payload }) => ({
+      ...state,
+      userId: payload.userId,
+      userName: payload.userName,
+    }),
+    authStateChange: (state, { payload }) => ({
+      ...state,
+      stateChange: payload.stateChange,
+    }),
+  },
 });
